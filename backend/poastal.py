@@ -24,7 +24,7 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 CORS(app)
 
-@app.route('/')
+@app.route('/api/search', methods=['GET'])
 def poastal():
     email = request.args.get('email')
     if email:
@@ -56,8 +56,8 @@ def poastal():
 
         return jsonify({
             'Duolingo Name': duolingo_name,
-            'GitHub Name': github_name,  # Add GitHub Name to the table
-            'Location': github_location,  # Add GitHub Location to the table
+            'GitHub Name': github_name,
+            'Location': github_location,
             'Image': {
                 'Duolingo': duolingo_image_url,
                 'GitHub': github_image,
@@ -67,7 +67,6 @@ def poastal():
             'Deliverable': deliverable_result,
             'Disposable': disposable_result,
             'Spam': spam_result,
-            #start profiles
             'profiles':{
                 'Facebook': adobe_facebook_result,
                 'Twitter': twitter_result,
@@ -86,7 +85,7 @@ def poastal():
             }
         })
     else:
-        return 'No email address provided.'
+        return jsonify({'error': 'No email address provided.'}), 400
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)
